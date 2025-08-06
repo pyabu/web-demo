@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Home - Book-X Bookstore</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background-size: cover;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(255, 255, 255, 0.85);
+      z-index: -1;
+    }
+
+    .navbar {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(6px);
+      padding: 14px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      position: relative;
+    }
+
+    .nav-links li a.active,
+    .nav-links li a:hover {
+      color: #007bff;
+    }
+
+    #cart-count {
+      background-color: red;
+      color: white;
+      padding: 2px 6px;
+      font-size: 0.75rem;
+      border-radius: 10px;
+      margin-left: 4px;
+    }
+
+    .search-box {
+      text-align: center;
+      margin: 30px 0 10px;
+    }
+
+    .search-box form {
+      position: relative;
+      display: inline-block;
+      width: 60%;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 10px 18px;
+      border-radius: 25px;
+      border: 1px solid #aaa;
+      font-size: 1rem;
+    }
+
+    .search-box i {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #555;
+    }
+
+    .main-container {
+      display: flex;
+      max-width: 1200px;
+      margin: 20px auto;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(5px);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-right: 1px solid #ddd;
+    }
+
+    .sidebar h4 {
+      margin-bottom: 15px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .sidebar ul li a {
+      text-decoration: none;
+      display: block;
+      padding: 8px;
+      border-radius: 6px;
+      color: #333;
+      transition: 0.3s;
+    }
+
+    .sidebar ul li a:hover {
+      background-color: #e2e6ea;
+      color: #007bff;
+    }
+
+    .content {
+      flex-grow: 1;
+      padding: 25px;
+    }
+
+    .content h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .content p {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.05rem;
+      color: #333;
+    }
+
+    .about-section {
+      background: #ffffff;
+      padding: 30px 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .about-section h2 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .about-section p {
+      font-size: 1rem;
+      text-align: justify;
+      color: #444;
+      line-height: 1.6;
+    }
+
+    .about-section ul {
+      padding-left: 20px;
+      margin-top: 10px;
+      color: #333;
+    }
+
+    .about-section ul li {
+      margin-bottom: 6px;
+    }
+
+    .book-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 25px;
+    }
+
+    .book-item {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+      overflow: hidden;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .book-item:hover {
+      transform: translateY(-5px);
+    }
+
+    .book-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-bottom: 1px solid #eee;
+    }
+
+    .book-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-top: 10px;
+      color: #2d2f42;
+    }
+
+    .book-meta {
+      font-size: 0.9rem;
+      color: #555;
+      margin: 6px 0;
+    }
+
+    .book-price {
+      color: green;
+      font-weight: 600;
+    }
+
+    .book-actions button {
+      margin: 8px 4px 12px;
+      padding: 6px 10px;
+      border: none;
+      border-radius: 20px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+
+    .book-actions button:hover {
+      background-color: #0056b3;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: #ddd;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .search-box form {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">📚 Book-X</div>
+    <ul class="nav-links">
+      <li><a href="index.html" class="active"><i class="bi bi-house-door-fill"></i> Home</a></li>
+      <li><a href="catlog.html"><i class="bi bi-journal-bookmark-fill"></i> Catalogue</a></li>
+      <li><a href="login.html"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+      <li><a href="sign.html"><i class="bi bi-person-plus-fill"></i> Signup</a></li>
+      <li>
+        <a href="cart.html"><i class="bi bi-cart-fill"></i> My Cart <span id="cart-count">0</span></a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Search Bar -->
+  <div class="search-box">
+    <form onsubmit="event.preventDefault();">
+      <input type="text" placeholder="Search for books, authors, or categories..." />
+      <i class="bi bi-search"></i>
+    </form>
+  </div>
+
+  <!-- Main Section -->
+  <div class="main-container">
+    <div class="sidebar">
+      <h4>Departments</h4>
+      <ul>
+        <li><a href="./cs.html">Computer Science</a></li>
+        <li><a href="./ai .html">AI & ML</a></li>
+        <li><a href="#">Data Mining</a></li>
+        <li><a href="#">EEE</a></li>
+        <li><a href="#">Robotics</a></li>
+        <li><a href="#">Literature</a></li>
+        <li><a href="#">Fiction</a></li>
+        <li><a href="#">Science</a></li>
+      </ul>
+    </div>
+
+    <div class="content">
+      <h1>Welcome to Book-X</h1>
+      <p>Discover your next favorite book. Browse our featured collection below.</p>
+
+      <div class="about-section">
+        <h2>About Book-X Bookstore System</h2>
+        <p>Book-X is a modern online bookstore management system designed for seamless browsing, selection, and purchase of books across various categories and departments.</p>
+        <ul>
+          <li>Clean, responsive homepage with category navigation</li>
+          <li>Secure login and registration system</li>
+          <li>Smart cart and wishlist system</li>
+          <li>Fully categorized catalogue with search support</li>
+          <li>Visually rich UI with real-time feedback</li>
+        </ul>
+      </div>
+
+      <section class="book-gallery">
+        <div class="book-item">
+          <img src="./harry.webp" alt="Harry Potter" class="book-img">
+          <div class="book-title">Harry Potter</div>
+          <div class="book-meta">⭐ 4.8 | <span class="book-price">₹499</span></div>
+          <div class="book-actions"><button onclick="addToCart()">Add to Cart</button></div>
+        </div>
+        <div class="book-item">
+          <img src="./daci.jpg" alt="Da Vinci Code" class="book-img">
+          <div class="book-title">Da Vinci Code</div>
+          <div class="book-meta">⭐ 4.6 | <span class="book-price">₹399</span></div>
+          <div class="book-actions"><button onclick="addToCart()">Add to Cart</button></div>
+        </div>
+        <div class="book-item">
+          <img src="./1984.jpg" alt="1984" class="book-img">
+          <div class="book-title">1984</div>
+          <div class="book-meta">⭐ 4.7 | <span class="book-price">₹349</span></div>
+          <div class="book-actions"><button onclick="addToCart()">Add to Cart</button></div>
+        </div>
+        <div class="book-item">
+          <img src="./amish.jpg" alt="Meluha" class="book-img">
+          <div class="book-title">Meluha</div>
+          <div class="book-meta">⭐ 4.5 | <span class="book-price">₹299</span></div>
+          <div class="book-actions"><button onclick="addToCart()">Add to Cart</button></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div>
+      <a href="#">About</a> |
+      <a href="#">Contact</a> 
+      <a href="#">Privacy</a>
+    </div> 
+    <div style="margin-top: 8px;">
+      Follow us:
+      <i class="bi bi-facebook"></i>
+      <i class="bi bi-instagram"></i>
+      <i class="bi bi-twitter"></i>
+    </div>
+    <div style="margin-top: 8px;">© 2025 Book-X. All rights reserved.</div>
+  </footer>
+
+  <!-- JS for Cart Counter -->
+  <script>
+    
+    let cartCount = 0;
+    function addToCart() {
+      cartCount++;
+      document.getElementById("cart-count").textContent = cartCount;
+    }
+  </script>
+</body>
+</html>
